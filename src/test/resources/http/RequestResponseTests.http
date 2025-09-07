@@ -1,0 +1,90 @@
+# #####################################################################################################################
+# Some small test to check the basic API
+# #####################################################################################################################
+
+### 1. Create new user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "User01",
+  "email": "user01@mail.com",
+  "password": "secretpass123"
+}
+
+
+### 2. List all users
+GET http://localhost:8080/users
+
+
+### 3. Add another user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "User02",
+  "email": "user02@mail.com",
+  "password": "notsosafepass!"
+}
+
+
+### 4. List all users
+GET http://localhost:8080/users
+
+
+### 5. User01 creates a new poll
+POST http://localhost:8080/polls?username=User01
+Content-Type: application/json
+
+{
+  "question": "What's your favorite color?",
+  "publishedAt": "2025-09-06T12:00:00Z",
+  "validUntil": "2025-09-07T12:00:00Z",
+  "options": [
+    { "caption": "Blue", "representationOrder": 1 },
+    { "caption": "Red", "representationOrder": 2 }
+  ]
+}
+
+> {%
+    client.global.set("pollId", response.body.id);
+    client.global.set("blueOptionId", response.body.options[0].id);
+    client.global.set("redOptionId", response.body.options[1].id);
+%}
+
+
+### 6. List all polls
+GET http://localhost:8080/polls
+
+
+### 7. User02 votes on the poll
+POST http://localhost:8080/polls/{{pollId}}/votes
+Content-Type: application/json
+
+{
+  "voterUsername": "User02",
+  "voteOptionId": {{blueOptionId}}
+}
+
+> {% client.global.set("firstVote", response.body.id) %}
+
+
+### 8. User02 changes the vote
+PUT http://localhost:8080/polls/{{pollId}}/votes/{{firstVote}}
+Content-Type: application/json
+
+{
+  "voteOptionId": {{redOptionId}}
+}
+
+
+### 9. List votes
+GET http://localhost:8080/polls/{{pollId}}/votes
+
+
+### 10. Delete the one poll
+DELETE http://localhost:8080/polls/{{pollId}}
+
+
+### 11. List votes (should be empty)
+GET http://localhost:8080/polls/{{pollId}}/votes
