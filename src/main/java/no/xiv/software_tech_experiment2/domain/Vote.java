@@ -15,6 +15,10 @@ public class Vote {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getVoterUsername() {
         return voterUsername;
     }
@@ -23,8 +27,16 @@ public class Vote {
         return voteOptionId;
     }
 
+    public void setVoteOptionId(Long voteOptionId) {
+        this.voteOptionId = voteOptionId;
+    }
+
     public Instant getVotedAt() {
         return votedAt;
+    }
+
+    public void setVotedAt(Instant votedAt) {
+        this.votedAt = votedAt;
     }
 
     @Override

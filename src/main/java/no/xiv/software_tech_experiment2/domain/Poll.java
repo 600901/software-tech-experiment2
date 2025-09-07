@@ -1,6 +1,8 @@
 package no.xiv.software_tech_experiment2.domain;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Poll {
 
@@ -8,6 +10,7 @@ public class Poll {
     private String question;
     private Instant publishedAt;
     private Instant validUntil;
+    private List<VoteOption> options = new ArrayList<>();
 
     public Poll() {}
 
@@ -39,6 +42,14 @@ public class Poll {
         this.validUntil = validUntil;
     }
 
+    public List<VoteOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<VoteOption> options) {
+        this.options = options;
+    }
+
     @Override
     public String toString() {
         return "Poll{" +
@@ -46,6 +57,7 @@ public class Poll {
                 ", question='" + question + '\'' +
                 ", publishedAt=" + publishedAt +
                 ", validUntil=" + validUntil +
+                ", options=" + options +
                 '}';
     }
 
